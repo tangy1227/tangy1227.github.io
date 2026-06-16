@@ -1,26 +1,24 @@
 import './index.css'
-import Cursor from './components/Cursor'
 import Nav from './components/Nav'
 import Hero from './components/Hero'
 import About from './components/About'
-import Skills from './components/Skills'
-import Projects from './components/Projects'
+import Academia from './components/Academia'
 import Music from './components/Music'
+import Photography from './components/Photography'
 import Contact from './components/Contact'
 
 export default function App() {
   return (
-    <div className="noise">
-      <Cursor />
+    <>
       <Nav />
       <main>
         <Hero />
         <About />
-        <Skills />
-        <Projects />
+        <Academia />
         <Music />
+        <Photography />
         <Contact />
       </main>
-    </div>
+    </>
   )
 }
