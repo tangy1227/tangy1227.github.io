@@ -1,96 +1,60 @@
 import { useRef } from 'react'
-import { motion, useInView, type Variants } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 
-const stats = [
-  { num: '4', label: 'Years Piano', sub: 'started age 4' },
-  { num: '5+', label: 'Languages', sub: 'Python · JS · R · Java · MATLAB' },
-  { num: '2', label: 'Degrees', sub: 'Georgia Tech' },
-  { num: '∞', label: 'Curiosity', sub: 'music × data' },
+const focus = [
+  'Music Information Retrieval',
+  'Signal Processing',
+  'Machine Learning',
+  'Music Production',
+  'Photography',
+  'Data Science',
 ]
-
-const fadeUp = (delay = 0): Variants => ({
-  hidden: { opacity: 0, y: 50 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.8, delay } }
-})
 
 export default function About() {
   const ref = useRef<HTMLElement>(null)
   const inView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section id="about" ref={ref} className="min-h-screen flex flex-col justify-center px-8 md:px-20 py-32">
-      <div className="max-w-6xl mx-auto w-full grid md:grid-cols-2 gap-20 items-center">
-        {/* Left */}
-        <div>
-          <motion.p
-            variants={fadeUp(0)}
-            initial="hidden"
-            animate={inView ? 'show' : 'hidden'}
-            className="section-num mb-5"
-          >
-            02 — ABOUT
-          </motion.p>
+    <section id="about" ref={ref} className="px-6 md:px-10 py-24 md:py-32 border-t border-[#e3e2dc]">
+      <div className="max-w-7xl mx-auto grid md:grid-cols-12 gap-10 md:gap-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="md:col-span-4"
+        >
+          <p className="eyebrow mb-6">About</p>
+          <h2 className="display text-4xl md:text-5xl">
+            A little<br />about me.
+          </h2>
+        </motion.div>
 
-          <motion.h2
-            variants={fadeUp(0.1)}
-            initial="hidden"
-            animate={inView ? 'show' : 'hidden'}
-            className="font-display text-5xl md:text-6xl font-bold leading-tight mb-8"
-          >
-            Where Sound
-            <br />
-            <span className="gradient-text">Meets Data.</span>
-          </motion.h2>
-
-          <motion.div
-            variants={fadeUp(0.2)}
-            initial="hidden"
-            animate={inView ? 'show' : 'hidden'}
-            className="space-y-4 text-gray-400 leading-relaxed"
-          >
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="md:col-span-8"
+        >
+          <div className="space-y-5 text-lg md:text-xl leading-relaxed text-[#3a3a37] max-w-2xl">
             <p>
-              I'm a second-year graduate student at <span className="text-white">Georgia Tech</span> studying Music Technology —
-              a field at the crossroads of music, signal processing, and machine learning.
+              I'm a graduate student at <span className="text-[#0a0a0a] font-medium">Georgia Tech</span>{' '}
+              studying Music Technology — the place where music, signal processing, and machine
+              learning overlap.
             </p>
             <p>
-              My journey began at four years old at a piano bench. By high school I was producing music in Ableton,
-              and by college I realized the same mathematical intuition behind chord progressions could unlock
-              patterns hidden in audio waveforms and speech.
+              My research is the serious half. The other half is creative: I've been{' '}
+              <span className="text-[#0a0a0a] font-medium">producing music</span> since high school and
+              shooting <span className="text-[#0a0a0a] font-medium">photography</span> everywhere I go.
+              All three feed each other.
             </p>
-            <p>
-              Today I use tools like <span className="text-[#00f5ff]">PyTorch</span>, <span className="text-[#00f5ff]">librosa</span>, and{' '}
-              <span className="text-[#00f5ff]">Max/MSP</span> to build systems that listen, analyze, and create.
-            </p>
-          </motion.div>
+          </div>
 
-          <motion.div
-            variants={fadeUp(0.3)}
-            initial="hidden"
-            animate={inView ? 'show' : 'hidden'}
-            className="mt-8 flex flex-wrap gap-3"
-          >
-            {['Music Production', 'Signal Processing', 'Deep Learning', 'Data Science', 'Audio Analysis'].map(t => (
-              <span key={t} className="tag">{t}</span>
+          <div className="mt-10 flex flex-wrap gap-2.5">
+            {focus.map(f => (
+              <span key={f} className="tag">{f}</span>
             ))}
-          </motion.div>
-        </div>
-
-        {/* Right — Stats */}
-        <div className="grid grid-cols-2 gap-5">
-          {stats.map((s, i) => (
-            <motion.div
-              key={s.label}
-              variants={fadeUp(0.1 + i * 0.08)}
-              initial="hidden"
-              animate={inView ? 'show' : 'hidden'}
-              className="card-hover p-6 border border-white/8 bg-[#0f0f0f]"
-            >
-              <div className="font-display text-5xl font-bold gradient-text mb-1">{s.num}</div>
-              <div className="text-white text-sm font-medium mb-1">{s.label}</div>
-              <div className="text-gray-500 text-xs font-mono-custom">{s.sub}</div>
-            </motion.div>
-          ))}
-        </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   )
