@@ -1,18 +1,41 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
+import MediaEmbed from './MediaEmbed'
 
-// TODO: replace with real releases and streaming links
-const tracks = [
-  { title: 'Resonance Study No. 1', genre: 'Electronic / Ambient', year: '2023', link: '#' },
-  { title: 'Signal & Noise', genre: 'Experimental', year: '2023', link: '#' },
-  { title: 'Spectral Drift', genre: 'Ambient / IDM', year: '2024', link: '#' },
-  { title: 'Formant (Live Version)', genre: 'Live Performance', year: '2024', link: '#' },
+// TODO: replace videoId / SoundCloud URL placeholders with your real media
+const releases = [
+  {
+    type: 'youtube' as const,
+    id: 'TODO_NIGHT_FLOWERS',
+    title: 'Night Flowers',
+    caption: 'Chinese traditional instruments — Guzheng, Dizi, Pipa — woven into electronic.',
+  },
+  {
+    type: 'youtube' as const,
+    id: 'TODO_DUNCAN_YILONG',
+    title: 'Duncan + Yilong',
+    caption: 'GT Rock & Pop Ensemble — a live band collaboration.',
+  },
+  {
+    type: 'soundcloud' as const,
+    id: 'https://soundcloud.com/TODO_YOUR_PROFILE',
+    title: 'More on SoundCloud',
+    caption: 'Beats, experiments, and works in progress.',
+  },
 ]
 
-const platforms = [
-  { label: 'Spotify', href: '#' },
-  { label: 'SoundCloud', href: '#' },
-  { label: 'YouTube', href: '#' },
+// TODO: replace links with real repo / patch download URLs
+const tools = [
+  {
+    title: 'Max for Live Autotune Plugin',
+    blurb: 'A user-friendly Ableton pitch-correction device with a key selector and virtual keyboard.',
+    links: [{ label: 'Download patch', href: '#' }],
+  },
+  {
+    title: 'Generative Drum Machine',
+    blurb: 'A four-voice Max drum machine that generates patterns from adjustable probability tables.',
+    links: [{ label: 'Learn more', href: '#' }],
+  },
 ]
 
 export default function Music() {
@@ -35,63 +58,55 @@ export default function Music() {
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.1 }}
-          className="display text-5xl md:text-7xl mb-6"
+          className="display text-5xl md:text-7xl mb-14"
         >
           Things I've<br />produced.
         </motion.h2>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="text-lg text-[#6b6b66] max-w-xl mb-14 leading-relaxed"
-        >
-          Self-taught producer since high school. Every track is a small experiment in blending
-          acoustic intuition with digital precision.
-        </motion.p>
-
-        {/* Track list */}
-        <div className="border-t border-[#e3e2dc]">
-          {tracks.map((track, i) => (
-            <motion.a
-              key={track.title}
-              href={track.link}
-              initial={{ opacity: 0, y: 20 }}
+        {/* Releases */}
+        <div className="grid md:grid-cols-3 gap-6 md:gap-8">
+          {releases.map((r, i) => (
+            <motion.div
+              key={r.title}
+              initial={{ opacity: 0, y: 24 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 + i * 0.08 }}
-              className="group flex items-center gap-5 md:gap-8 py-6 border-b border-[#e3e2dc] hover:bg-[#f0efea] transition-colors px-2 -mx-2"
+              transition={{ duration: 0.6, delay: 0.15 + i * 0.1 }}
             >
-              <span className="font-display text-sm text-[#9a9a93] w-6 shrink-0">
-                {String(i + 1).padStart(2, '0')}
-              </span>
-              <div className="flex-1 min-w-0">
-                <div className="font-display font-semibold text-xl md:text-2xl group-hover:text-[#ffb800] transition-colors truncate">
-                  {track.title}
-                </div>
-                <div className="text-sm text-[#6b6b66] mt-0.5">{track.genre}</div>
-              </div>
-              <span className="hidden md:block font-display text-sm text-[#6b6b66] shrink-0">{track.year}</span>
-              <span className="font-display text-sm font-semibold uppercase tracking-wider shrink-0 flex items-center gap-1.5">
-                Listen
-                <span className="group-hover:translate-x-1 transition-transform">→</span>
-              </span>
-            </motion.a>
+              <MediaEmbed type={r.type} id={r.id} title={r.title} />
+              <h3 className="font-display font-semibold text-lg mt-4">{r.title}</h3>
+              <p className="text-sm text-[#6b6b66] mt-1 leading-relaxed">{r.caption}</p>
+            </motion.div>
           ))}
         </div>
 
-        {/* Platform links */}
-        <motion.div
+        {/* Production tools */}
+        <motion.p
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.6 }}
-          className="mt-10 flex flex-wrap gap-8"
+          transition={{ delay: 0.4 }}
+          className="eyebrow mt-20 mb-8"
         >
-          {platforms.map(p => (
-            <a key={p.label} href={p.href} className="font-display font-semibold text-sm uppercase tracking-wider link-underline">
-              {p.label} →
-            </a>
+          Production tools — Max/MSP
+        </motion.p>
+        <div className="grid md:grid-cols-2 gap-5">
+          {tools.map((t, i) => (
+            <motion.div
+              key={t.title}
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.45 + i * 0.1 }}
+              className="border border-[#e3e2dc] rounded-xl p-6 bg-[#fafaf8] flex flex-col"
+            >
+              <h3 className="font-display font-semibold text-xl mb-2">{t.title}</h3>
+              <p className="text-[#6b6b66] leading-relaxed mb-5 flex-1">{t.blurb}</p>
+              <div className="flex flex-wrap gap-3">
+                {t.links.map(l => (
+                  <a key={l.label} href={l.href} className="btn-outline">{l.label} →</a>
+                ))}
+              </div>
+            </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   )
