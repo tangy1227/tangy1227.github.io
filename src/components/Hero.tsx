@@ -35,8 +35,7 @@ export default function Hero() {
         </motion.h1>
 
         <motion.p variants={fadeUp} className="text-[#6b6b66] text-lg md:text-2xl font-light max-w-2xl leading-snug mb-10">
-          Music technology researcher by training. Producer and photographer by
-          obsession. This is where the three meet.
+          Music tech researcher. Producer and photographer on the side.
         </motion.p>
 
         <motion.div variants={fadeUp} className="flex flex-wrap gap-3">

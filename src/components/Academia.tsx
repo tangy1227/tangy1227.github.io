@@ -1,35 +1,25 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
+import MediaEmbed from './MediaEmbed'
 
-// TODO: replace placeholders with real publications / research / projects
-const work = [
+// TODO: replace videoId placeholders + links with your real YouTube ids / URLs
+const projects = [
   {
-    title: 'Audio Emotion Classification with Spectrogram CNNs',
-    role: 'Research Project · Georgia Tech',
-    year: '2024',
-    desc: 'Deep learning model classifying emotional content in speech and music from spectrogram features.',
-    link: '#',
+    title: 'Automatic Drum Loop Transcription Tool',
+    blurb: 'Detects onsets via spectral flux and classifies each hit (kick, snare, hat) with a kNN model trained on 1000+ one-shots, evaluated on the MDB Drum Dataset.',
+    tags: ['Python', 'librosa', 'kNN', 'MFCC', 'Onset Detection'],
+    videoId: 'TODO_DRUM_TRANSCRIPTION', // YouTube demo / presentation
+    links: [
+      { label: 'GitHub', href: '#' },
+      { label: 'Slides', href: '#' },
+    ],
   },
   {
-    title: 'Automatic Music Structure Segmentation',
-    role: 'Course Research',
-    year: '2024',
-    desc: 'Identifying intro, verse, chorus, and bridge boundaries using self-similarity matrices.',
-    link: '#',
-  },
-  {
-    title: 'Generative Melody System (LSTM + Max/MSP)',
-    role: 'Independent Study',
-    year: '2023',
-    desc: 'Recurrent network trained on MIDI corpora with a real-time performance patch.',
-    link: '#',
-  },
-  {
-    title: 'Speech–Music Rhythm Interaction Dashboard',
-    role: 'Data Visualization',
-    year: '2023',
-    desc: 'Interactive exploration of correlations between spoken-language patterns and musical rhythm.',
-    link: '#',
+    title: 'Audio Alignment Tool',
+    blurb: 'Aligns two recordings of the same song by measuring spectral similarity over time — useful for syncing covers, takes, and live versions.',
+    tags: ['Python', 'DSP', 'DTW', 'Similarity'],
+    videoId: 'TODO_AUDIO_ALIGNMENT',
+    links: [{ label: 'GitHub', href: '#' }],
   },
 ]
 
@@ -49,14 +39,14 @@ export default function Academia() {
           Academia
         </motion.p>
 
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-14">
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.1 }}
             className="display text-5xl md:text-7xl"
           >
-            Research<br />& projects.
+            Research<br />&amp; projects.
           </motion.h2>
           <motion.a
             href="#"
@@ -70,29 +60,32 @@ export default function Academia() {
           </motion.a>
         </div>
 
-        {/* Work list */}
-        <div className="border-t border-[#d6d5cd]">
-          {work.map((p, i) => (
-            <motion.a
+        {/* Project cards */}
+        <div className="space-y-12 md:space-y-16">
+          {projects.map((p, i) => (
+            <motion.article
               key={p.title}
-              href={p.link}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.15 + i * 0.08 }}
-              className="group grid md:grid-cols-12 gap-3 md:gap-6 items-baseline py-7 border-b border-[#d6d5cd] hover:bg-[#e7e6df] transition-colors px-2 -mx-2"
+              transition={{ duration: 0.6, delay: 0.15 + i * 0.1 }}
+              className="grid md:grid-cols-12 gap-6 md:gap-10 items-center"
             >
-              <span className="md:col-span-1 font-display text-sm text-[#9a9a93]">
-                {String(i + 1).padStart(2, '0')}
-              </span>
-              <div className="md:col-span-7">
-                <h3 className="font-display font-semibold text-xl md:text-2xl group-hover:text-[#ffb800] transition-colors">
-                  {p.title}
-                </h3>
-                <p className="text-[#6b6b66] mt-1 leading-relaxed">{p.desc}</p>
+              <div className={`md:col-span-7 ${i % 2 === 1 ? 'md:order-2' : ''}`}>
+                <MediaEmbed type="youtube" id={p.videoId} title={p.title} />
               </div>
-              <span className="md:col-span-3 text-sm text-[#6b6b66]">{p.role}</span>
-              <span className="md:col-span-1 font-display text-sm text-[#6b6b66] md:text-right">{p.year}</span>
-            </motion.a>
+              <div className={`md:col-span-5 ${i % 2 === 1 ? 'md:order-1' : ''}`}>
+                <h3 className="font-display font-semibold text-2xl md:text-3xl mb-3">{p.title}</h3>
+                <p className="text-[#6b6b66] leading-relaxed mb-5">{p.blurb}</p>
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {p.tags.map(t => <span key={t} className="tag">{t}</span>)}
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  {p.links.map(l => (
+                    <a key={l.label} href={l.href} className="btn-outline">{l.label} →</a>
+                  ))}
+                </div>
+              </div>
+            </motion.article>
           ))}
         </div>
 
@@ -100,8 +93,8 @@ export default function Academia() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.5 }}
-          className="mt-14 grid md:grid-cols-12 gap-3 md:gap-6"
+          transition={{ delay: 0.4 }}
+          className="mt-20 pt-10 border-t border-[#d6d5cd] grid md:grid-cols-12 gap-3 md:gap-6"
         >
           <p className="md:col-span-4 eyebrow">Education</p>
           <div className="md:col-span-8 space-y-4">
@@ -109,10 +102,9 @@ export default function Academia() {
               <p className="font-display font-semibold text-lg">Georgia Institute of Technology</p>
               <p className="text-[#6b6b66]">M.S. Music Technology · Atlanta, GA</p>
             </div>
-            {/* TODO: add undergraduate institution */}
             <div>
-              <p className="font-display font-semibold text-lg">B.S. — Add your undergrad</p>
-              <p className="text-[#6b6b66]">Degree · Institution · Year</p>
+              <p className="font-display font-semibold text-lg">Georgia Institute of Technology</p>
+              <p className="text-[#6b6b66]">B.S. — add your undergraduate degree · Year</p>
             </div>
           </div>
         </motion.div>

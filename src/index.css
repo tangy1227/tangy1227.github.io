@@ -164,6 +164,45 @@ body {
   letter-spacing: 0.02em;
 }
 
+/* Media facade (click-to-load YouTube / SoundCloud) */
+.media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #161616;
+  cursor: pointer;
+}
+.play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  transition: transform 0.25s ease, background 0.25s ease;
+  pointer-events: none;
+}
+.play-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 53%;
+  transform: translate(-50%, -50%);
+  border-style: solid;
+  border-width: 11px 0 11px 18px;
+  border-color: transparent transparent transparent var(--ink);
+}
+.group:hover .play-btn {
+  transform: translate(-50%, -50%) scale(1.08);
+  background: #ffc933;
+}
+
 /* Animated underline link */
 .link-underline {
   position: relative;

@@ -1,13 +1,10 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 
-const focus = [
-  'Music Information Retrieval',
-  'Signal Processing',
-  'Machine Learning',
-  'Music Production',
-  'Photography',
-  'Data Science',
+const skillGroups = [
+  { label: 'Languages', items: ['Python', 'MATLAB', 'JavaScript', 'SQL', 'R', 'Java'] },
+  { label: 'ML & Data', items: ['PyTorch', 'TensorFlow', 'scikit-learn', 'NumPy', 'pandas', 'librosa', 'D3.js'] },
+  { label: 'Audio & Tools', items: ['Max/MSP', 'Logic Pro X', 'Ableton Live', 'AWS', 'GCP'] },
 ]
 
 export default function About() {
@@ -35,23 +32,23 @@ export default function About() {
           transition={{ duration: 0.7, delay: 0.1 }}
           className="md:col-span-8"
         >
-          <div className="space-y-5 text-lg md:text-xl leading-relaxed text-[#3a3a37] max-w-2xl">
-            <p>
-              I'm a graduate student at <span className="text-[#0a0a0a] font-medium">Georgia Tech</span>{' '}
-              studying Music Technology — the place where music, signal processing, and machine
-              learning overlap.
-            </p>
-            <p>
-              My research is the serious half. The other half is creative: I've been{' '}
-              <span className="text-[#0a0a0a] font-medium">producing music</span> since high school and
-              shooting <span className="text-[#0a0a0a] font-medium">photography</span> everywhere I go.
-              All three feed each other.
-            </p>
-          </div>
+          <p className="text-xl md:text-2xl leading-snug text-[#3a3a37] max-w-2xl">
+            Music Tech grad student at <span className="text-[#0a0a0a] font-medium">Georgia Tech</span>.
+            Piano since four, producing since high school, now researching{' '}
+            <span className="text-[#0a0a0a] font-medium">music &amp; speech</span> through signal
+            processing and machine learning.
+          </p>
 
-          <div className="mt-10 flex flex-wrap gap-2.5">
-            {focus.map(f => (
-              <span key={f} className="tag">{f}</span>
+          <div className="mt-12 space-y-6">
+            {skillGroups.map(group => (
+              <div key={group.label} className="grid md:grid-cols-12 gap-3 items-start">
+                <p className="md:col-span-3 eyebrow pt-1">{group.label}</p>
+                <div className="md:col-span-9 flex flex-wrap gap-2">
+                  {group.items.map(item => (
+                    <span key={item} className="tag">{item}</span>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </motion.div>
