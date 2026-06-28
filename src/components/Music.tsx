@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, useState } from 'react'
-import { motion, useInView, useScroll, useTransform } from 'framer-motion'
+import { easeInOut, motion, useInView, useScroll, useTransform } from 'framer-motion'
 import MediaEmbed from './MediaEmbed'
+import { links } from '../data/links'
 
 // TODO: replace videoId / SoundCloud URL placeholders with your real media
 const releases = [
@@ -18,7 +19,7 @@ const releases = [
   },
   {
     type: 'soundcloud' as const,
-    id: 'https://soundcloud.com/TODO_YOUR_PROFILE',
+    id: links.soundcloud,
     title: 'More on SoundCloud',
     caption: 'Beats, experiments, and works in progress.',
   },
@@ -49,6 +50,10 @@ const tools = [
 
 // Scroll-pinned horizontal timeline: vertical scroll progress drives the track's
 // translateX, so the years slide left→right while the section stays pinned.
+// How much vertical scroll the timeline consumes relative to its horizontal
+// travel. 1 = 1:1 (fast); higher = the years slide more slowly. Tweak to taste.
+const SCROLL_LENGTH = 2
+
 function HorizontalTimeline() {
   const targetRef = useRef<HTMLDivElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
@@ -74,12 +79,15 @@ function HorizontalTimeline() {
     target: targetRef,
     offset: ['start start', 'end end'],
   })
-  const x = useTransform(scrollYProgress, [0, 1], [0, -distance])
+  // easeInOut so the track eases in on entry and decelerates into the final
+  // cards on exit — the timeline visually "settles" before the section unpins,
+  // so scroll momentum doesn't shoot you straight past the next section.
+  const x = useTransform(scrollYProgress, [0, 1], [0, -distance], { ease: easeInOut })
 
   return (
     <div
       ref={targetRef}
-      style={{ height: `calc(100vh + ${distance}px)` }}
+      style={{ height: `calc(100vh + ${distance * SCROLL_LENGTH}px)` }}
       className="relative"
     >
       <div className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center">
@@ -207,7 +215,7 @@ export default function Music() {
       {/* full-bleed scroll-pinned timeline */}
       <HorizontalTimeline />
 
-      <div className="max-w-7xl mx-auto w-full px-6 md:px-10">
+      <div className="max-w-7xl mx-auto w-full px-6 md:px-10 pt-20 md:pt-28">
         {/* Production tools */}
         <motion.p
           initial={{ opacity: 0 }}

@@ -1,14 +1,8 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
+import { links, socials } from '../data/links'
 
-const socials = [
-  { label: 'GitHub', href: 'https://github.com' },
-  { label: 'LinkedIn', href: 'https://linkedin.com' },
-  { label: 'Instagram', href: 'https://instagram.com' },
-  { label: 'YouTube', href: 'https://youtube.com' },
-]
-
-const EMAIL = 'owentang1227@gmail.com'
+const EMAIL = links.email
 
 export default function Contact() {
   const ref = useRef<HTMLElement>(null)
