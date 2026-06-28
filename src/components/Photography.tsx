@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
+import { links } from '../data/links'
 
 // TODO: replace each tile with a real <img>. `span` controls grid sizing.
 const photos = [
@@ -76,8 +77,12 @@ export default function Photography() {
           transition={{ delay: 0.6 }}
           className="mt-10"
         >
-          {/* TODO: link to Instagram / portfolio */}
-          <a href="#" className="font-display font-semibold text-sm uppercase tracking-wider link-underline">
+          <a
+            href={links.instagram || '#'}
+            target="_blank"
+            rel="noreferrer"
+            className="font-display font-semibold text-sm uppercase tracking-wider link-underline"
+          >
             See more on Instagram →
           </a>
         </motion.div>
