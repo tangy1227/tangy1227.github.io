@@ -1,7 +1,12 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import { easeInOut, motion, useInView, useScroll, useTransform } from 'framer-motion'
 import MediaEmbed from './MediaEmbed'
+import RevealLines from './motion/RevealLines'
+import RevealChars from './motion/RevealChars'
+import RevealImage from './motion/RevealImage'
+import Button from './ui/Button'
 import { links } from '../data/links'
+import { EASE_OUT_EXPO } from '../lib/motion'
 
 // TODO: replace videoId / SoundCloud URL placeholders with your real media
 const releases = [
@@ -113,7 +118,7 @@ function HorizontalTimeline() {
                 <span className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-[#ffb800] ring-4 ring-[#fafaf8] transition-transform duration-300 group-hover:scale-125" />
               </div>
 
-              <span className="font-display font-bold text-5xl md:text-7xl leading-none mb-6 tabular-nums">
+              <span className="font-display font-bold text-5xl md:text-7xl leading-none mb-6 tabular-nums transition-colors duration-500 group-hover:text-[#ffb800]">
                 {yr.year}
               </span>
 
@@ -155,61 +160,50 @@ function HorizontalTimeline() {
 export default function Music() {
   const ref = useRef<HTMLElement>(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
+  const toolsRef = useRef<HTMLDivElement>(null)
+  const toolsInView = useInView(toolsRef, { once: true, margin: '0px 0px -10% 0px' })
 
   return (
-    <section id="music" ref={ref} className="py-24 md:py-32 border-t border-[#e3e2dc]">
+    <section id="music" ref={ref} className="section py-24 md:py-32 border-t border-[#e3e2dc]">
       <div className="max-w-7xl mx-auto w-full px-6 md:px-10">
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="eyebrow mb-6"
-        >
-          Music — a hobby
-        </motion.p>
+        <p className="eyebrow mb-6">
+          <RevealChars text="Music — a hobby" />
+        </p>
 
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.1 }}
+        <RevealLines
           className="display text-5xl md:text-7xl mb-14"
-        >
-          Things I've<br />produced.
-        </motion.h2>
+          lines={["Things I've", 'produced.']}
+        />
 
         {/* Releases */}
         <div className="grid md:grid-cols-3 gap-6 md:gap-8">
           {releases.map((r, i) => (
-            <motion.div
-              key={r.title}
-              initial={{ opacity: 0, y: 24 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.15 + i * 0.1 }}
-            >
-              <MediaEmbed type={r.type} id={r.id} title={r.title} />
-              <h3 className="font-display font-semibold text-lg mt-4">{r.title}</h3>
-              <p className="text-sm text-[#6b6b66] mt-1 leading-relaxed">{r.caption}</p>
-            </motion.div>
+            <div key={r.title}>
+              <RevealImage className="rounded-[10px] overflow-hidden" delay={i * 0.1}>
+                <MediaEmbed type={r.type} id={r.id} title={r.title} />
+              </RevealImage>
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={inView ? { opacity: 1, y: 0 } : undefined}
+                transition={{ duration: 0.8, ease: EASE_OUT_EXPO, delay: 0.35 + i * 0.1 }}
+              >
+                <h3 className="font-display font-semibold text-lg mt-4">{r.title}</h3>
+                <p className="text-sm text-[#6b6b66] mt-1 leading-relaxed">{r.caption}</p>
+              </motion.div>
+            </div>
           ))}
         </div>
 
         {/* Chronological archive — lead-in */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.4 }}
-          className="eyebrow mt-20 mb-3"
-        >
-          Archive — 2016 → 2020
-        </motion.p>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.45 }}
+        <p className="eyebrow mt-20 mb-3">
+          <RevealChars text="Archive — 2016 → 2020" />
+        </p>
+        <RevealLines
+          as="p"
           className="text-[#6b6b66] max-w-xl leading-relaxed"
-        >
-          Five years of bedroom production — keep scrolling to move through the timeline.
-        </motion.p>
+          bar="var(--bg-alt)"
+          lines={['Five years of bedroom production — keep scrolling to move through the timeline.']}
+        />
       </div>
 
       {/* full-bleed scroll-pinned timeline */}
@@ -217,28 +211,23 @@ export default function Music() {
 
       <div className="max-w-7xl mx-auto w-full px-6 md:px-10 pt-20 md:pt-28">
         {/* Production tools */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.55 }}
-          className="eyebrow mb-8"
-        >
-          Production tools — Max/MSP
-        </motion.p>
-        <div className="grid md:grid-cols-2 gap-5">
+        <p className="eyebrow mb-8">
+          <RevealChars text="Production tools — Max/MSP" />
+        </p>
+        <div ref={toolsRef} className="grid md:grid-cols-2 gap-5">
           {tools.map((t, i) => (
             <motion.div
               key={t.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.45 + i * 0.1 }}
-              className="border border-[#e3e2dc] rounded-xl p-6 bg-[#fafaf8] flex flex-col"
+              initial={{ opacity: 0, y: 28 }}
+              animate={toolsInView ? { opacity: 1, y: 0 } : undefined}
+              transition={{ duration: 0.9, ease: EASE_OUT_EXPO, delay: i * 0.12 }}
+              className="tool-card border border-[#e3e2dc] rounded-xl p-6 bg-[#fafaf8] flex flex-col"
             >
               <h3 className="font-display font-semibold text-xl mb-2">{t.title}</h3>
               <p className="text-[#6b6b66] leading-relaxed mb-5 flex-1">{t.blurb}</p>
               <div className="flex flex-wrap gap-3">
                 {t.links.map(l => (
-                  <a key={l.label} href={l.href} className="btn-outline">{l.label} →</a>
+                  <Button key={l.label} href={l.href} variant="outline">{l.label}</Button>
                 ))}
               </div>
             </motion.div>

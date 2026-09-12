@@ -1,5 +1,8 @@
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import RevealLines from './motion/RevealLines'
+import RevealChars from './motion/RevealChars'
+import RevealImage from './motion/RevealImage'
+import RollText from './motion/RollText'
+import { ArrowSwap } from './ui/Button'
 import { links } from '../data/links'
 
 // TODO: replace each tile with a real <img>. `span` controls grid sizing.
@@ -14,78 +17,55 @@ const photos = [
 ]
 
 export default function Photography() {
-  const ref = useRef<HTMLElement>(null)
-  const inView = useInView(ref, { once: true, margin: '-80px' })
-
   return (
-    <section id="photography" ref={ref} className="px-6 md:px-10 py-24 md:py-32 bg-[#f0efea] border-t border-[#e3e2dc]">
+    <section id="photography" className="section px-6 md:px-10 py-24 md:py-32 bg-[#f0efea] border-t border-[#e3e2dc]">
       <div className="max-w-7xl mx-auto w-full">
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="eyebrow mb-6"
-        >
-          Photography — a hobby
-        </motion.p>
+        <p className="eyebrow mb-6">
+          <RevealChars text="Photography — a hobby" />
+        </p>
 
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.1 }}
+          <RevealLines
             className="display text-5xl md:text-7xl"
-          >
-            Through<br />the lens.
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            transition={{ delay: 0.3 }}
+            lines={['Through', 'the lens.']}
+          />
+          <RevealLines
+            as="p"
             className="text-[#6b6b66] max-w-sm"
-          >
-            A rolling selection of frames from wherever I happen to be. Hover to see them in color.
-          </motion.p>
+            delay={0.3}
+            bar="var(--bg-alt)"
+            lines={['A rolling selection of frames from wherever I happen to be. Hover to see them in color.']}
+          />
         </div>
 
         {/* Gallery */}
         <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-auto gap-3 md:gap-4">
           {photos.map((photo, i) => (
-            <motion.div
-              key={photo.caption}
-              initial={{ opacity: 0, scale: 0.97 }}
-              animate={inView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.6, delay: 0.1 + i * 0.07 }}
-              className={photo.span}
-            >
+            <RevealImage key={photo.caption} className={photo.span} delay={(i % 4) * 0.08} fill>
               {/* TODO: replace with real photo */}
               <div className={`photo ${photo.ratio} w-full h-full group`}>
-                <div className="absolute inset-0 flex items-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-black/50 to-transparent">
+                <div className="absolute inset-0 flex items-end opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-t from-black/50 to-transparent">
                   <div className="p-4 relative z-10">
                     <p className="font-display font-semibold text-white text-sm">{photo.caption}</p>
                     <p className="text-white/70 text-xs">{photo.location}</p>
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </RevealImage>
           ))}
         </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.6 }}
-          className="mt-10"
-        >
+        <div className="mt-10">
           <a
             href={links.instagram || '#'}
             target="_blank"
             rel="noreferrer"
-            className="font-display font-semibold text-sm uppercase tracking-wider link-underline"
+            className="group inline-flex items-center gap-2 font-display font-semibold text-sm uppercase tracking-wider"
           >
-            See more on Instagram →
+            <RollText text="See more on Instagram" />
+            <ArrowSwap up />
           </a>
-        </motion.div>
+        </div>
       </div>
     </section>
   )
