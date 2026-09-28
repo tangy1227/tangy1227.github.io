@@ -52,7 +52,7 @@ export default function Hero({ ready }: { ready: boolean }) {
     >
       <motion.div
         style={textStyle}
-        className="flex-1 min-h-0 flex flex-col justify-center max-w-7xl mx-auto w-full origin-[50%_65%] will-change-transform"
+        className="flex-1 min-h-0 flex flex-col justify-center-safe max-w-7xl mx-auto w-full origin-[50%_65%] will-change-transform"
       >
         <p className="eyebrow mb-5 md:mb-7">
           <RevealChars text="Yilong Tang — Atlanta, GA" show={ready} delay={0.15} />

@@ -25,3 +25,6 @@ dist-ssr
 
 # Other
 old_resources
+
+# Local screenshots
+screenshot/

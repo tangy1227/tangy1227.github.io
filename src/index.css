@@ -233,14 +233,16 @@ body {
 }
 
 /* Hero headline: sized against both width and height so the pinned hero
-   always fits one viewport. */
+   always fits one viewport. Budget: title (3 lines ≈ 33vh) + strip (16vh)
+   + ~400px of padding, eyebrow, subtitle and buttons — fits from ~800px
+   tall; below that the strip is dropped. */
 .hero-title {
-  font-size: clamp(2.4rem, min(9.6vw, 17vh), 8.25rem);
+  font-size: clamp(2.4rem, min(9.6vw, 12vh), 8.25rem);
 }
 .hero-strip {
-  height: clamp(120px, 20vh, 240px);
+  height: clamp(96px, 16vh, 240px);
 }
-@media (max-height: 700px) {
+@media (max-height: 820px) {
   .hero-strip-wrap { display: none; }
 }
 
