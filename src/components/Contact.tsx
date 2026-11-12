@@ -1,62 +1,67 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
+import RevealLines from './motion/RevealLines'
+import RevealChars from './motion/RevealChars'
+import RollText from './motion/RollText'
+import Magnetic from './motion/Magnetic'
+import { ArrowSwap } from './ui/Button'
 import { links, socials } from '../data/links'
+import { EASE_OUT_EXPO } from '../lib/motion'
 
 const EMAIL = links.email
 
 export default function Contact() {
   const ref = useRef<HTMLElement>(null)
-  const inView = useInView(ref, { once: true, margin: '-80px' })
+  const inView = useInView(ref, { once: true, margin: '0px 0px -15% 0px' })
 
   return (
-    <section id="contact" ref={ref} className="px-6 md:px-10 pt-24 md:pt-32 pb-10 border-t border-[#e3e2dc]">
+    <section id="contact" ref={ref} className="section px-6 md:px-10 pt-24 md:pt-32 pb-10 border-t border-[#e3e2dc]">
       <div className="max-w-7xl mx-auto w-full">
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="eyebrow mb-8"
-        >
-          Contact
-        </motion.p>
+        <p className="eyebrow mb-8">
+          <RevealChars text="Contact" />
+        </p>
 
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.1 }}
+        <RevealLines
           className="display text-[clamp(2.5rem,9vw,7rem)] mb-10"
-        >
-          Let's<br />get in touch.
-        </motion.h2>
+          lines={["Let's", 'get in touch.']}
+        />
 
-        <motion.a
-          href={`mailto:${EMAIL}`}
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="group inline-flex items-center gap-3 font-display font-semibold text-2xl md:text-4xl hover:text-[#ffb800] transition-colors"
+          animate={inView ? { opacity: 1, y: 0 } : undefined}
+          transition={{ duration: 0.9, ease: EASE_OUT_EXPO, delay: 0.45 }}
         >
-          {EMAIL}
-          <span className="group-hover:translate-x-2 transition-transform">↗</span>
-        </motion.a>
+          <Magnetic strength={0.15}>
+            <a
+              href={`mailto:${EMAIL}`}
+              className="group inline-flex items-center gap-3 font-display font-semibold text-2xl md:text-4xl hover:text-[#ffb800] transition-colors duration-500"
+            >
+              <RollText text={EMAIL} />
+              <ArrowSwap up size={22} />
+            </a>
+          </Magnetic>
+        </motion.div>
 
         {/* Socials */}
         <motion.div
           initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.4 }}
+          animate={inView ? { opacity: 1 } : undefined}
+          transition={{ duration: 0.8, delay: 0.6 }}
           className="mt-16 border-t border-[#e3e2dc] pt-8 flex flex-wrap gap-x-10 gap-y-4"
         >
-          {socials.map(s => (
-            <a
+          {socials.map((s, i) => (
+            <motion.a
               key={s.label}
               href={s.href}
               target="_blank"
               rel="noreferrer"
-              className="font-display font-semibold text-sm uppercase tracking-wider link-underline"
+              className="group font-display font-semibold text-sm uppercase tracking-wider"
+              initial={{ opacity: 0, y: 12 }}
+              animate={inView ? { opacity: 1, y: 0 } : undefined}
+              transition={{ duration: 0.7, ease: EASE_OUT_EXPO, delay: 0.65 + i * 0.06 }}
             >
-              {s.label}
-            </a>
+              <RollText text={s.label} />
+            </motion.a>
           ))}
         </motion.div>
 
