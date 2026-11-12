@@ -114,11 +114,11 @@ function HorizontalTimeline() {
             >
               {/* timeline rail + node */}
               <div className="relative w-full mb-7">
-                <div className="h-px w-full bg-[#e3e2dc]" />
-                <span className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-[#ffb800] ring-4 ring-[#fafaf8] transition-transform duration-300 group-hover:scale-125" />
+                <div className="h-px w-full bg-line" />
+                <span className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-accent ring-4 ring-bg transition-transform duration-300 group-hover:scale-125" />
               </div>
 
-              <span className="font-display font-bold text-5xl md:text-7xl leading-none mb-6 tabular-nums transition-colors duration-500 group-hover:text-[#ffb800]">
+              <span className="font-display font-bold text-5xl md:text-7xl leading-none mb-6 tabular-nums transition-colors duration-500 group-hover:text-accent">
                 {yr.year}
               </span>
 
@@ -131,7 +131,7 @@ function HorizontalTimeline() {
               </div>
 
               {yr.note && (
-                <p className="text-sm text-[#6b6b66] mt-4 leading-relaxed max-w-[30ch]">
+                <p className="text-sm text-muted mt-4 leading-relaxed max-w-[30ch]">
                   {yr.note}
                 </p>
               )}
@@ -142,13 +142,13 @@ function HorizontalTimeline() {
         {/* scroll-linked progress indicator */}
         <div className="absolute bottom-10 left-6 md:left-10 right-6 md:right-10 z-10">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-display font-semibold tracking-[0.2em] text-[#6b6b66]">2016</span>
-            <span className="text-xs font-display font-semibold tracking-[0.2em] text-[#6b6b66]">2020</span>
+            <span className="text-xs font-display font-semibold tracking-[0.2em] text-muted">2016</span>
+            <span className="text-xs font-display font-semibold tracking-[0.2em] text-muted">2020</span>
           </div>
-          <div className="h-px w-full bg-[#e3e2dc] relative overflow-hidden">
+          <div className="h-px w-full bg-line relative overflow-hidden">
             <motion.div
               style={{ scaleX: scrollYProgress }}
-              className="absolute inset-0 origin-left bg-[#ffb800]"
+              className="absolute inset-0 origin-left bg-accent"
             />
           </div>
         </div>
@@ -164,7 +164,7 @@ export default function Music() {
   const toolsInView = useInView(toolsRef, { once: true, margin: '0px 0px -10% 0px' })
 
   return (
-    <section id="music" ref={ref} className="section py-24 md:py-32 border-t border-[#e3e2dc]">
+    <section id="music" ref={ref} className="section py-24 md:py-32 border-t border-line">
       <div className="max-w-7xl mx-auto w-full px-6 md:px-10">
         <p className="eyebrow mb-6">
           <RevealChars text="Music — a hobby" />
@@ -188,7 +188,7 @@ export default function Music() {
                 transition={{ duration: 0.8, ease: EASE_OUT_EXPO, delay: 0.35 + i * 0.1 }}
               >
                 <h3 className="font-display font-semibold text-lg mt-4">{r.title}</h3>
-                <p className="text-sm text-[#6b6b66] mt-1 leading-relaxed">{r.caption}</p>
+                <p className="text-sm text-muted mt-1 leading-relaxed">{r.caption}</p>
               </motion.div>
             </div>
           ))}
@@ -200,7 +200,7 @@ export default function Music() {
         </p>
         <RevealLines
           as="p"
-          className="text-[#6b6b66] max-w-xl leading-relaxed"
+          className="text-muted max-w-xl leading-relaxed"
           bar="var(--bg-alt)"
           lines={['Five years of bedroom production — keep scrolling to move through the timeline.']}
         />
@@ -221,10 +221,10 @@ export default function Music() {
               initial={{ opacity: 0, y: 28 }}
               animate={toolsInView ? { opacity: 1, y: 0 } : undefined}
               transition={{ duration: 0.9, ease: EASE_OUT_EXPO, delay: i * 0.12 }}
-              className="tool-card border border-[#e3e2dc] rounded-xl p-6 bg-[#fafaf8] flex flex-col"
+              className="tool-card border border-line rounded-xl p-6 bg-bg flex flex-col"
             >
               <h3 className="font-display font-semibold text-xl mb-2">{t.title}</h3>
-              <p className="text-[#6b6b66] leading-relaxed mb-5 flex-1">{t.blurb}</p>
+              <p className="text-muted leading-relaxed mb-5 flex-1">{t.blurb}</p>
               <div className="flex flex-wrap gap-3">
                 {t.links.map(l => (
                   <Button key={l.label} href={l.href} variant="outline">{l.label}</Button>

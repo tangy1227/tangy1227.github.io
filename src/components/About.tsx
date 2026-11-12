@@ -39,8 +39,8 @@ export default function About() {
         <div className="md:col-span-8">
           <ScrollWords
             tokens={intro}
-            className="text-xl md:text-2xl leading-snug text-[#3a3a37] max-w-2xl"
-            strongClassName="text-[#0a0a0a] font-medium"
+            className="text-xl md:text-2xl leading-snug text-ink-soft max-w-2xl"
+            strongClassName="text-ink font-medium"
           />
 
           <div ref={skillsRef} className="mt-12 space-y-6">

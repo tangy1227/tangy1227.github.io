@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion'
 import RollText from './motion/RollText'
 import Magnetic from './motion/Magnetic'
+import ThemeToggle from './ThemeToggle'
 import { useLenis } from '../lib/lenis'
 import { socials } from '../data/links'
 import { EASE_OUT_EXPO } from '../lib/motion'
@@ -71,8 +72,8 @@ export default function Nav() {
           open
             ? 'border-transparent text-[#fafaf8]'
             : scrolled
-              ? 'bg-[#fafaf8]/85 backdrop-blur-md border-[#e3e2dc] text-[#0a0a0a]'
-              : 'border-transparent text-[#0a0a0a]'
+              ? 'bg-bg/85 backdrop-blur-md border-line text-ink'
+              : 'border-transparent text-ink'
         }`}
       >
         <div
@@ -89,50 +90,54 @@ export default function Nav() {
             <RollText text="Yilong Tang" />
           </a>
 
-          {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-8">
-            {links.slice(0, -1).map(link => {
-              const isActive = active === link.href
-              return (
+          <div className="flex items-center gap-4">
+            {/* Desktop links */}
+            <div className="hidden md:flex items-center gap-5 lg:gap-8">
+              {links.slice(0, -1).map(link => {
+                const isActive = active === link.href
+                return (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    className={`group relative py-1 font-display text-xs font-semibold uppercase tracking-[0.16em] transition-colors duration-500 ${
+                      isActive ? 'text-ink' : 'text-ink/65 hover:text-ink'
+                    }`}
+                  >
+                    <RollText text={link.label} />
+                    {isActive && (
+                      <motion.span
+                        layoutId="nav-active"
+                        className="absolute -bottom-0.5 left-0 right-0 h-[2px] bg-accent"
+                        transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                      />
+                    )}
+                  </a>
+                )
+              })}
+              <Magnetic strength={0.35}>
                 <a
-                  key={link.href}
-                  href={link.href}
-                  className={`group relative py-1 font-display text-xs font-semibold uppercase tracking-[0.16em] transition-colors duration-500 ${
-                    isActive ? 'text-[#0a0a0a]' : 'text-[#0a0a0a]/65 hover:text-[#0a0a0a]'
-                  }`}
+                  href="#contact"
+                  className="group inline-flex items-center gap-2 font-display text-xs font-semibold uppercase tracking-[0.12em] px-4 py-2 border border-ink rounded-full transition-colors duration-500 ease-[cubic-bezier(.19,1,.22,1)] hover:bg-ink hover:text-bg"
                 >
-                  <RollText text={link.label} />
-                  {isActive && (
-                    <motion.span
-                      layoutId="nav-active"
-                      className="absolute -bottom-0.5 left-0 right-0 h-[2px] bg-[#ffb800]"
-                      transition={{ type: 'spring', stiffness: 420, damping: 34 }}
-                    />
-                  )}
+                  <RollText text="Contact" />
                 </a>
-              )
-            })}
-            <Magnetic strength={0.35}>
-              <a
-                href="#contact"
-                className="group inline-flex items-center gap-2 font-display text-xs font-semibold uppercase tracking-[0.12em] px-4 py-2 border border-[#0a0a0a] rounded-full transition-colors duration-500 ease-[cubic-bezier(.19,1,.22,1)] hover:bg-[#0a0a0a] hover:text-[#fafaf8]"
-              >
-                <RollText text="Contact" />
-              </a>
-            </Magnetic>
-          </div>
+              </Magnetic>
+            </div>
 
-          {/* Mobile toggle */}
-          <button
-            aria-label="Toggle menu"
-            aria-expanded={open}
-            onClick={() => setOpen(o => !o)}
-            className="md:hidden flex flex-col gap-1.5 p-1 text-current"
-          >
-            <span className={`ham-bar ${open ? 'translate-y-2 rotate-45' : ''}`} />
-            <span className={`ham-bar ${open ? 'opacity-0' : ''}`} />
-            <span className={`ham-bar ${open ? '-translate-y-2 -rotate-45' : ''}`} />
-          </button>
+            <ThemeToggle />
+
+            {/* Mobile toggle */}
+            <button
+              aria-label="Toggle menu"
+              aria-expanded={open}
+              onClick={() => setOpen(o => !o)}
+              className="md:hidden flex flex-col gap-1.5 p-1 text-current"
+            >
+              <span className={`ham-bar ${open ? 'translate-y-2 rotate-45' : ''}`} />
+              <span className={`ham-bar ${open ? 'opacity-0' : ''}`} />
+              <span className={`ham-bar ${open ? '-translate-y-2 -rotate-45' : ''}`} />
+            </button>
+          </div>
         </div>
       </motion.nav>
 
@@ -158,10 +163,10 @@ export default function Nav() {
                   animate={{ y: 0, opacity: 1, transition: { delay: 0.18 + i * 0.06, duration: 0.8, ease: EASE_OUT_EXPO } }}
                   exit={{ y: 24, opacity: 0, transition: { duration: 0.3 } }}
                 >
-                  <span className="font-display text-xs font-semibold tracking-[0.2em] text-[#ffb800] tabular-nums">
+                  <span className="font-display text-xs font-semibold tracking-[0.2em] text-accent tabular-nums">
                     0{i + 1}
                   </span>
-                  <span className={active === link.href ? 'text-[#ffb800]' : ''}>{link.label}</span>
+                  <span className={active === link.href ? 'text-accent' : ''}>{link.label}</span>
                 </motion.a>
               ))}
             </nav>

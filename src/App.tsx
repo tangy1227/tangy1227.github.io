@@ -32,7 +32,7 @@ export default function App() {
       <main>
         <Hero ready={ready} />
         {/* First thing to slide over the pinned hero: a thin ticker band. */}
-        <div className="section border-t border-b border-[#e3e2dc] py-3">
+        <div className="section border-t border-b border-line py-3">
           <Marquee items={ticker} />
         </div>
         <About />

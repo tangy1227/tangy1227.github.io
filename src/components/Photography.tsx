@@ -18,7 +18,7 @@ const photos = [
 
 export default function Photography() {
   return (
-    <section id="photography" className="section px-6 md:px-10 py-24 md:py-32 bg-[#f0efea] border-t border-[#e3e2dc]">
+    <section id="photography" className="section px-6 md:px-10 py-24 md:py-32 bg-bg-alt border-t border-line">
       <div className="max-w-7xl mx-auto w-full">
         <p className="eyebrow mb-6">
           <RevealChars text="Photography — a hobby" />
@@ -31,7 +31,7 @@ export default function Photography() {
           />
           <RevealLines
             as="p"
-            className="text-[#6b6b66] max-w-sm"
+            className="text-muted max-w-sm"
             delay={0.3}
             bar="var(--bg-alt)"
             lines={['A rolling selection of frames from wherever I happen to be. Hover to see them in color.']}
