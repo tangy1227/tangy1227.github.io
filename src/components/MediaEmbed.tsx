@@ -49,7 +49,7 @@ export default function MediaEmbed({ type, id, title, cover }: Props) {
         />
       ) : (
         // SoundCloud has no simple thumbnail URL — use a branded cover
-        <div className="absolute inset-0 bg-[#161616] flex items-center justify-center">
+        <div className="absolute inset-0 bg-[var(--media-bg)] flex items-center justify-center">
           <span className="font-display font-bold uppercase tracking-[0.2em] text-white/30 text-sm">
             SoundCloud
           </span>

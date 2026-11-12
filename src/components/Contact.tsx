@@ -15,7 +15,7 @@ export default function Contact() {
   const inView = useInView(ref, { once: true, margin: '0px 0px -15% 0px' })
 
   return (
-    <section id="contact" ref={ref} className="section px-6 md:px-10 pt-24 md:pt-32 pb-10 border-t border-[#e3e2dc]">
+    <section id="contact" ref={ref} className="section px-6 md:px-10 pt-24 md:pt-32 pb-10 border-t border-line">
       <div className="max-w-7xl mx-auto w-full">
         <p className="eyebrow mb-8">
           <RevealChars text="Contact" />
@@ -34,7 +34,7 @@ export default function Contact() {
           <Magnetic strength={0.15}>
             <a
               href={`mailto:${EMAIL}`}
-              className="group inline-flex items-center gap-3 font-display font-semibold text-2xl md:text-4xl hover:text-[#ffb800] transition-colors duration-500"
+              className="group inline-flex items-center gap-3 font-display font-semibold text-2xl md:text-4xl hover:text-accent transition-colors duration-500"
             >
               <RollText text={EMAIL} />
               <ArrowSwap up size={22} />
@@ -47,7 +47,7 @@ export default function Contact() {
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : undefined}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="mt-16 border-t border-[#e3e2dc] pt-8 flex flex-wrap gap-x-10 gap-y-4"
+          className="mt-16 border-t border-line pt-8 flex flex-wrap gap-x-10 gap-y-4"
         >
           {socials.map((s, i) => (
             <motion.a
@@ -66,7 +66,7 @@ export default function Contact() {
         </motion.div>
 
         {/* Footer line */}
-        <div className="mt-20 flex flex-col md:flex-row justify-between gap-3 text-xs text-[#9a9a93] font-display uppercase tracking-wider">
+        <div className="mt-20 flex flex-col md:flex-row justify-between gap-3 text-xs text-faint font-display uppercase tracking-wider">
           <span>© {new Date().getFullYear()} Yilong Tang</span>
           <span>Academia · Music · Photography</span>
         </div>

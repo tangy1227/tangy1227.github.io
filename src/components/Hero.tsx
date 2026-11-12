@@ -74,7 +74,7 @@ export default function Hero({ ready }: { ready: boolean }) {
           initial={{ opacity: 0, y: 24 }}
           animate={ready ? { opacity: 1, y: 0 } : undefined}
           transition={{ duration: 0.9, ease: EASE_OUT_EXPO, delay: 0.8 }}
-          className="text-[#6b6b66] text-lg md:text-2xl font-light max-w-2xl leading-snug mb-7 md:mb-9"
+          className="text-muted text-lg md:text-2xl font-light max-w-2xl leading-snug mb-7 md:mb-9"
         >
           Music tech researcher. Producer and photographer on the side.
         </motion.p>
@@ -113,7 +113,7 @@ export default function Hero({ ready }: { ready: boolean }) {
         initial={{ opacity: 0 }}
         animate={ready ? { opacity: 1 } : undefined}
         transition={{ delay: 1.6, duration: 0.8 }}
-        className="pointer-events-none absolute bottom-3 right-6 md:right-10 hidden md:flex items-center gap-3 font-display text-[10px] font-semibold uppercase tracking-[0.3em] text-[#6b6b66]"
+        className="pointer-events-none absolute bottom-3 right-6 md:right-10 hidden md:flex items-center gap-3 font-display text-[10px] font-semibold uppercase tracking-[0.3em] text-muted"
       >
         Scroll <span className="scroll-line" />
       </motion.div>

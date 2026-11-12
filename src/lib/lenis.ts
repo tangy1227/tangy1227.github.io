@@ -18,6 +18,11 @@ function subscribe(cb: () => void) {
   }
 }
 
+/** The live Lenis instance for non-React code (event handlers, other stores). */
+export function getLenis(): Lenis | null {
+  return instance
+}
+
 /** The live Lenis instance, or null before mount / after unmount. */
 export function useLenis(): Lenis | null {
   return useSyncExternalStore(subscribe, () => instance, () => null)

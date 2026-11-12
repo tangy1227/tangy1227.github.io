@@ -51,7 +51,7 @@ function ProjectCard({ p, flip }: { p: (typeof projects)[number]; flip: boolean 
           initial={{ opacity: 0, y: 16 }}
           animate={inView ? { opacity: 1, y: 0 } : undefined}
           transition={{ duration: 0.8, ease: EASE_OUT_EXPO, delay: 0.3 }}
-          className="text-[#6b6b66] leading-relaxed mb-5"
+          className="text-muted leading-relaxed mb-5"
         >
           {p.blurb}
         </motion.p>
@@ -88,7 +88,7 @@ export default function Academia() {
   const eduInView = useInView(eduRef, { once: true, margin: '0px 0px -10% 0px' })
 
   return (
-    <section id="academia" className="section px-6 md:px-10 py-24 md:py-32 bg-[#f0efea] border-t border-[#e3e2dc]">
+    <section id="academia" className="section px-6 md:px-10 py-24 md:py-32 bg-bg-alt border-t border-line">
       <div className="max-w-7xl mx-auto w-full">
         <p className="eyebrow mb-6">
           <RevealChars text="Academia" />
@@ -122,7 +122,7 @@ export default function Academia() {
           initial={{ opacity: 0, y: 20 }}
           animate={eduInView ? { opacity: 1, y: 0 } : undefined}
           transition={{ duration: 0.8, ease: EASE_OUT_EXPO }}
-          className="mt-20 pt-10 border-t border-[#d6d5cd] grid md:grid-cols-12 gap-3 md:gap-6"
+          className="mt-20 pt-10 border-t border-line-strong grid md:grid-cols-12 gap-3 md:gap-6"
         >
           <p className="md:col-span-4 eyebrow">
             <RevealChars text="Education" />
@@ -130,11 +130,11 @@ export default function Academia() {
           <div className="md:col-span-8 space-y-4">
             <div>
               <p className="font-display font-semibold text-lg">Georgia Institute of Technology</p>
-              <p className="text-[#6b6b66]">M.S. Music Technology · Atlanta, GA</p>
+              <p className="text-muted">M.S. Music Technology · Atlanta, GA</p>
             </div>
             <div>
               <p className="font-display font-semibold text-lg">Georgia Institute of Technology</p>
-              <p className="text-[#6b6b66]">B.S. — add your undergraduate degree · Year</p>
+              <p className="text-muted">B.S. — add your undergraduate degree · Year</p>
             </div>
           </div>
         </motion.div>
