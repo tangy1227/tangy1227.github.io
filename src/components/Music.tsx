@@ -4,24 +4,27 @@ import MediaEmbed from './MediaEmbed'
 import RevealLines from './motion/RevealLines'
 import RevealChars from './motion/RevealChars'
 import RevealImage from './motion/RevealImage'
+import { ArrowUpRight } from 'lucide-react'
 import Button from './ui/Button'
-import { links } from '../data/links'
+import { links, youtubeVideo } from '../data/links'
 import { EASE_OUT_EXPO } from '../lib/motion'
 
-// TODO: replace videoId / SoundCloud URL placeholders with your real media
+// Featured releases. YouTube ids are from the Tangy1227 channel.
 const releases = [
   {
     type: 'youtube' as const,
-    id: 'TODO_NIGHT_FLOWERS',
+    id: 'Y20nS71Qcmw',
     title: 'Night Flowers',
-    caption: 'Chinese traditional instruments — Guzheng, Dizi, Pipa — woven into electronic.',
+    caption: 'Chill-out electronic woven with guzheng, dizi and pipa. The audio visualizer is made in After Effects.',
   },
   {
     type: 'youtube' as const,
-    id: 'TODO_DUNCAN_YILONG',
-    title: 'Duncan + Yilong',
-    caption: 'GT Rock & Pop Ensemble — a live band collaboration.',
+    id: '-O2Q3ILMUdw',
+    title: 'Like This',
+    caption: 'A melodic original that builds to a dubstep-leaning drop.',
   },
+  // TODO: "Duncan + Yilong" (GT Rock & Pop Ensemble, on the Georgia Tech School
+  // of Music channel) — add it here once we have the YouTube link.
   {
     type: 'soundcloud' as const,
     id: links.soundcloud,
@@ -30,26 +33,60 @@ const releases = [
   },
 ]
 
-// Chronological archive — five years of releases, pulled from the early catalog
-const archive = [
-  { year: '2016', tracks: ['Dreams and Visions', 'Duang', 'The North Rain'], note: 'Throwback — where it started.' },
-  { year: '2017', tracks: ['三葉のテーマ', '东 / 西 / 南', 'Summer 夏', "Summer's Glory", 'Shanghai'] },
-  { year: '2018', tracks: ['PloT Twist', 'Graduation Day', 'East — Remix', 'Kiwi'] },
-  { year: '2019', tracks: ['Like This'], note: 'Melodic, dubstep-influenced original.' },
-  { year: '2020', tracks: ['Night Flowers'], note: 'Chill fusion with Chinese instruments — guzheng, dizi, pipa.' },
+type Track = { title: string; youtube?: string }
+
+// Chronological archive from the old Tangy Studio site. Tracks with a
+// `youtube` id link to the video; the rest were download-only releases.
+const archive: { year: string; tracks: Track[]; note?: string }[] = [
+  {
+    year: '2016',
+    tracks: [{ title: 'Dreams and Visions' }, { title: 'Duang' }, { title: 'The North Rain' }],
+    note: 'Throwback — where it started.',
+  },
+  {
+    year: '2017',
+    tracks: [
+      { title: '三葉のテーマ', youtube: 'n9XgNuvHD14' },
+      { title: '东 East', youtube: 'aF4-ndSvDm8' },
+      { title: '西 West', youtube: 'z5Oz1B7kSYU' },
+      { title: '南 South', youtube: 'ClXpkE4AWVs' },
+      { title: 'Summer 夏', youtube: 'g4AA_4wUh3Y' },
+      { title: "Summer's Glory" },
+      { title: 'Shanghai 上海', youtube: 'eu8uOjfBP-A' },
+    ],
+    note: 'A Chinese-style EDM series: East, West and South.',
+  },
+  {
+    year: '2018',
+    tracks: [
+      { title: 'PloT Twist', youtube: 'xAhuK7tmLdY' },
+      { title: 'Graduation Day', youtube: 'I311mTOICVk' },
+      { title: 'East (Remix)', youtube: '23fhwm7s55Q' },
+      { title: 'Kiwi', youtube: 'wsdHwnWJdI4' },
+    ],
+    note: 'The future bass year.',
+  },
+  { year: '2019', tracks: [{ title: 'Like This', youtube: '-O2Q3ILMUdw' }], note: 'Melodic, dubstep-influenced original.' },
+  {
+    year: '2020',
+    tracks: [{ title: 'Night Flowers', youtube: 'Y20nS71Qcmw' }],
+    note: 'Chill fusion with Chinese instruments — guzheng, dizi, pipa.',
+  },
 ]
 
-// TODO: replace links with real repo / patch download URLs
+// Links with an empty href are hidden until filled in.
 const tools = [
   {
     title: 'Max for Live Autotune Plugin',
-    blurb: 'A user-friendly Ableton pitch-correction device with a key selector and virtual keyboard.',
-    links: [{ label: 'Download patch', href: '#' }],
+    blurb:
+      "A group-built Ableton Live device on Max's retune~ object that recreates the Auto-Tune effect. I designed the interface: a key and scale selector plus a virtual keyboard for choosing which notes to snap to.",
+    links: [{ label: 'Download patch', href: '' }], // TODO: patch download URL
   },
   {
     title: 'Generative Drum Machine',
-    blurb: 'A four-voice Max drum machine that generates patterns from adjustable probability tables.',
-    links: [{ label: 'Learn more', href: '#' }],
+    blurb:
+      'A four-voice Max drum machine. Program patterns by hand, or generate them from per-voice probability tables, with envelope controls on every voice.',
+    links: [{ label: 'Learn more', href: '' }], // TODO: demo / write-up URL
   },
 ]
 
@@ -122,12 +159,30 @@ function HorizontalTimeline() {
                 {yr.year}
               </span>
 
-              <div className="flex flex-col gap-1.5">
-                {yr.tracks.map((t) => (
-                  <span key={t} className="font-display font-semibold text-base md:text-lg">
-                    {t}
-                  </span>
-                ))}
+              <div className="flex flex-col items-start gap-1.5">
+                {yr.tracks.map((t) =>
+                  t.youtube ? (
+                    <a
+                      key={t.title}
+                      href={youtubeVideo(t.youtube)}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="group/track inline-flex items-center gap-1.5 font-display font-semibold text-base md:text-lg transition-colors duration-300 hover:text-accent"
+                    >
+                      {t.title}
+                      <ArrowUpRight
+                        size={15}
+                        strokeWidth={2.5}
+                        aria-hidden="true"
+                        className="opacity-35 transition-[opacity,transform] duration-300 group-hover/track:opacity-100 group-hover/track:-translate-y-0.5 group-hover/track:translate-x-0.5"
+                      />
+                    </a>
+                  ) : (
+                    <span key={t.title} className="font-display font-semibold text-base md:text-lg">
+                      {t.title}
+                    </span>
+                  ),
+                )}
               </div>
 
               {yr.note && (
@@ -224,12 +279,14 @@ export default function Music() {
               className="tool-card border border-line rounded-xl p-6 bg-bg flex flex-col"
             >
               <h3 className="font-display font-semibold text-xl mb-2">{t.title}</h3>
-              <p className="text-muted leading-relaxed mb-5 flex-1">{t.blurb}</p>
-              <div className="flex flex-wrap gap-3">
-                {t.links.map(l => (
-                  <Button key={l.label} href={l.href} variant="outline">{l.label}</Button>
-                ))}
-              </div>
+              <p className="text-muted leading-relaxed flex-1">{t.blurb}</p>
+              {t.links.some(l => l.href) && (
+                <div className="flex flex-wrap gap-3 mt-5">
+                  {t.links.filter(l => l.href).map(l => (
+                    <Button key={l.label} href={l.href} variant="outline" external>{l.label}</Button>
+                  ))}
+                </div>
+              )}
             </motion.div>
           ))}
         </div>

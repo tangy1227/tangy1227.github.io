@@ -5,13 +5,15 @@ import RevealChars from './motion/RevealChars'
 import RevealImage from './motion/RevealImage'
 import Button from './ui/Button'
 import { EASE_OUT_EXPO } from '../lib/motion'
+import { photoSrc } from '../data/photos'
 
-// Bottom photo strip — replace each block with a real <img> later
+// Bottom photo strip: four highlights from the gallery (slugs from
+// src/data/photos.ts). Wide, short tiles, so pick frames that crop well.
 const strip = [
-  { label: 'Studio' },
-  { label: 'Live set' },
-  { label: 'Field' },
-  { label: 'Lab' },
+  { slug: 'yellowstone-2', label: 'Yellowstone' },
+  { slug: 'shanghai', label: 'Shanghai' },
+  { slug: 'mt-rainer', label: 'Mt. Rainier' },
+  { slug: 'cannon-beach-2', label: 'Cannon Beach' },
 ]
 
 /**
@@ -55,7 +57,7 @@ export default function Hero({ ready }: { ready: boolean }) {
         className="flex-1 min-h-0 flex flex-col justify-center-safe max-w-7xl mx-auto w-full origin-[50%_65%] will-change-transform"
       >
         <p className="eyebrow mb-5 md:mb-7">
-          <RevealChars text="Yilong Tang — Atlanta, GA" show={ready} delay={0.15} />
+          <RevealChars text="Yilong Tang — AI Engineer" show={ready} delay={0.15} />
         </p>
 
         <RevealLines
@@ -76,7 +78,7 @@ export default function Hero({ ready }: { ready: boolean }) {
           transition={{ duration: 0.9, ease: EASE_OUT_EXPO, delay: 0.8 }}
           className="text-muted text-lg md:text-2xl font-light max-w-2xl leading-snug mb-7 md:mb-9"
         >
-          Music tech researcher. Producer and photographer on the side.
+          AI engineer with a music technology background. Producer and photographer on the side.
         </motion.p>
 
         <motion.div
@@ -97,9 +99,10 @@ export default function Hero({ ready }: { ready: boolean }) {
       >
         {strip.map((item, i) => (
           <RevealImage key={item.label} show={ready} delay={1 + i * 0.08} className="hero-strip" fill>
-            {/* TODO: replace with real photo */}
             <div className="photo h-full w-full flex items-end">
-              <span className="relative z-10 p-3 text-xs font-display font-semibold uppercase tracking-widest text-white/90 mix-blend-difference">
+              <img src={photoSrc(item.slug)} alt="" className="absolute inset-0 h-full w-full object-cover" />
+              <span className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/55 to-transparent" aria-hidden="true" />
+              <span className="relative z-10 p-3 text-xs font-display font-semibold uppercase tracking-widest text-white">
                 {item.label}
               </span>
             </div>

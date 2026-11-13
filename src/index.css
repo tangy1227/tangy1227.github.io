@@ -25,6 +25,7 @@
   --photo-2: #c4c3bb;
   --photo-3: #b7b6ad;
   --media-bg: #161616;
+  --figure-filter: none;
   --card-shadow: rgba(10, 10, 10, 0.25);
   /* cubic-bezier(.19,1,.22,1): expo-out, the site's default UI ease */
   --ease-expo: cubic-bezier(0.19, 1, 0.22, 1);
@@ -48,6 +49,7 @@
   --photo-2: #2e2e2b;
   --photo-3: #262624;
   --media-bg: #1e1e1c;
+  --figure-filter: brightness(0.86);
   --card-shadow: rgba(0, 0, 0, 0.6);
 }
 
@@ -250,6 +252,17 @@ body {
   border-radius: 10px;
   background: var(--media-bg);
   cursor: pointer;
+}
+/* Non-clickable .media frame (project screenshots / diagrams). */
+.media-static {
+  cursor: auto;
+}
+/* Diagram on a white panel so its baked-in white background blends in;
+   toned down in dark mode. */
+.media-static.figure {
+  background: #fff;
+  box-shadow: inset 0 0 0 1px var(--line);
+  filter: var(--figure-filter);
 }
 .play-btn {
   position: absolute;

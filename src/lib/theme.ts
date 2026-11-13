@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from 'react'
 import { flushSync } from 'react-dom'
-import { getLenis } from './lenis'
+import { holdScroll } from './lenis'
 
 /**
  * Colour theme. The user picks a preference: 'system' follows the OS / browser
@@ -64,31 +64,6 @@ window.addEventListener('storage', e => {
 
 apply()
 
-const blockScroll = (e: Event) => {
-  e.preventDefault()
-  e.stopPropagation() // keep it from reaching Lenis's own wheel listener
-}
-const blockOpts = { capture: true, passive: false } as const
-
-/**
- * The old theme is a still snapshot for the whole reveal. If the page keeps
- * moving underneath (Lenis's glide after a scroll, trackpad momentum), the two
- * halves tear apart along the circle's edge. Stop any glide in place and
- * swallow wheel/touch scrolling until the reveal ends. (Not `lenis.stop()`:
- * that sets `overflow: clip` on <html>, which drops the scrollbar and reflows
- * the page mid-transition.)
- */
-function holdScroll() {
-  const lenis = getLenis()
-  if (lenis && !lenis.isStopped) lenis.scrollTo(lenis.animatedScroll, { immediate: true, force: true })
-  window.addEventListener('wheel', blockScroll, blockOpts)
-  window.addEventListener('touchmove', blockScroll, blockOpts)
-}
-function releaseScroll() {
-  window.removeEventListener('wheel', blockScroll, blockOpts)
-  window.removeEventListener('touchmove', blockScroll, blockOpts)
-}
-
 let revealId = 0
 
 /**
@@ -101,6 +76,10 @@ let revealId = 0
  * `.theme-reveal`), not one started from `transition.ready`: the pseudo-element
  * then starts clipped on the very first frame. Starting it from JS can land a
  * frame late, which shows the whole new theme for one frame (a flash).
+ *
+ * The old theme is a still snapshot for the whole reveal, so scrolling is held
+ * until it ends: if the page kept gliding underneath (Lenis, trackpad
+ * momentum), the two halves would tear apart along the circle's edge.
  */
 export function setThemePreference(next: ThemePreference, origin?: { x: number; y: number }) {
   if (next === preference) return
@@ -130,16 +109,16 @@ export function setThemePreference(next: ThemePreference, origin?: { x: number; 
   const root = document.documentElement
   const id = ++revealId
 
-  holdScroll()
+  const releaseScroll = holdScroll()
   root.style.setProperty('--reveal-x', `${x}px`)
   root.style.setProperty('--reveal-y', `${y}px`)
   root.style.setProperty('--reveal-r', `${Math.ceil(radius)}px`)
   root.classList.add('theme-reveal')
 
   const done = () => {
+    releaseScroll()
     // A newer switch skipped this one and now owns the reveal state.
     if (id !== revealId) return
-    releaseScroll()
     root.classList.remove('theme-reveal')
     root.style.removeProperty('--reveal-x')
     root.style.removeProperty('--reveal-y')
