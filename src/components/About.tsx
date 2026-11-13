@@ -2,19 +2,25 @@ import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import RevealLines from './motion/RevealLines'
 import RevealChars from './motion/RevealChars'
+import RevealImage from './motion/RevealImage'
 import ScrollWords, { type Token } from './motion/ScrollWords'
 import { EASE_OUT_EXPO } from '../lib/motion'
+import { photoSrc, photoSrcSet, portrait } from '../data/photos'
 
 const skillGroups = [
-  { label: 'Languages', items: ['Python', 'MATLAB', 'JavaScript', 'SQL', 'R', 'Java'] },
-  { label: 'ML & Data', items: ['PyTorch', 'TensorFlow', 'scikit-learn', 'NumPy', 'pandas', 'librosa', 'D3.js'] },
-  { label: 'Audio & Tools', items: ['Max/MSP', 'Logic Pro X', 'Ableton Live', 'AWS', 'GCP'] },
+  { label: 'Code', items: ['Python', 'Rust', 'C#', 'MATLAB', 'JavaScript', 'HTML/CSS', 'SQL', 'R', 'Java'] },
+  { label: 'ML & Data', items: ['PyTorch', 'TensorFlow', 'scikit-learn', 'NumPy', 'SciPy', 'pandas', 'Matplotlib', 'librosa', 'D3.js'] },
+  { label: 'Cloud', items: ['AWS', 'GCP', 'Docker', 'Hadoop'] },
+  { label: 'Audio & Tools', items: ['Max/MSP', 'Ableton Live', 'Logic Pro X', 'REAPER', 'Unity', 'After Effects', 'Photoshop'] },
+  { label: 'Speaks', items: ['English', 'Mandarin'] },
 ]
 
 const intro: Token[] = [
-  { text: 'Music Tech grad student at ' },
+  { text: 'AI engineer at ' },
+  { text: 'Satelytics,', strong: true },
+  { text: ' with a B.S. and M.S. in Music Technology from ' },
   { text: 'Georgia Tech.', strong: true },
-  { text: ' Piano since four, producing since high school, now researching ' },
+  { text: ' Piano since four, producing since high school. My research centered on ' },
   { text: 'music & speech', strong: true },
   { text: ' through signal processing and machine learning.' },
 ]
@@ -34,6 +40,17 @@ export default function About() {
             className="display text-4xl md:text-5xl"
             lines={['A little', 'about me.']}
           />
+          <RevealImage className="mt-10 max-w-[340px] md:max-w-none" delay={0.15}>
+            <img
+              src={photoSrc(portrait.slug, 2048)}
+              srcSet={photoSrcSet(portrait.slug)}
+              sizes="(min-width: 768px) 30vw, 340px"
+              alt={portrait.alt}
+              loading="lazy"
+              decoding="async"
+              className="block aspect-[4/5] w-full object-cover"
+            />
+          </RevealImage>
         </div>
 
         <div className="md:col-span-8">

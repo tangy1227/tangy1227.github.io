@@ -1,22 +1,18 @@
+import { useState } from 'react'
 import RevealLines from './motion/RevealLines'
 import RevealChars from './motion/RevealChars'
 import RevealImage from './motion/RevealImage'
 import RollText from './motion/RollText'
+import PhotoViewer from './PhotoViewer'
 import { ArrowSwap } from './ui/Button'
 import { links } from '../data/links'
+import { gallery, galleryRows, photoAspect, photoSrc, photoSrcSet } from '../data/photos'
 
-// TODO: replace each tile with a real <img>. `span` controls grid sizing.
-const photos = [
-  { caption: 'Morning fog', location: 'Blue Ridge, GA', span: 'md:col-span-2 md:row-span-2', ratio: 'aspect-square' },
-  { caption: 'Neon alley', location: 'Atlanta, GA', span: '', ratio: 'aspect-[4/5]' },
-  { caption: 'Low tide', location: 'Tybee Island', span: '', ratio: 'aspect-[4/5]' },
-  { caption: 'Rooftop', location: 'Midtown', span: '', ratio: 'aspect-[4/5]' },
-  { caption: 'Studio light', location: 'Home studio', span: '', ratio: 'aspect-[4/5]' },
-  { caption: 'Crowd', location: 'Live show', span: 'md:col-span-2', ratio: 'aspect-[16/9]' },
-  { caption: 'Stillness', location: 'Piedmont Park', span: '', ratio: 'aspect-[4/5]' },
-]
+const indexOf = new Map(gallery.map((p, i) => [p.slug, i]))
 
 export default function Photography() {
+  const [viewer, setViewer] = useState<number | null>(null)
+
   return (
     <section id="photography" className="section px-6 md:px-10 py-24 md:py-32 bg-bg-alt border-t border-line">
       <div className="max-w-7xl mx-auto w-full">
@@ -34,30 +30,58 @@ export default function Photography() {
             className="text-muted max-w-sm"
             delay={0.3}
             bar="var(--bg-alt)"
-            lines={['A rolling selection of frames from wherever I happen to be. Hover to see them in color.']}
+            lines={['National parks out west, the Oregon coast, and home cities. Hover for color, click to view full size.']}
           />
         </div>
 
-        {/* Gallery */}
-        <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-auto gap-3 md:gap-4">
-          {photos.map((photo, i) => (
-            <RevealImage key={photo.caption} className={photo.span} delay={(i % 4) * 0.08} fill>
-              {/* TODO: replace with real photo */}
-              <div className={`photo ${photo.ratio} w-full h-full group`}>
-                <div className="absolute inset-0 flex items-end opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-t from-black/50 to-transparent">
-                  <div className="p-4 relative z-10">
-                    <p className="font-display font-semibold text-white text-sm">{photo.caption}</p>
-                    <p className="text-white/70 text-xs">{photo.location}</p>
+        {/* Gallery: justified rows. Each photo's flex-grow and aspect-ratio are
+            its own width/height, so a row fills the width at one shared height
+            with nothing cropped. */}
+        <div className="flex flex-col gap-3 md:gap-4">
+          {galleryRows.map((row, r) => (
+            <div key={r} className="flex flex-wrap items-start gap-3 md:gap-4">
+              {row.map((photo, i) => {
+                const aspect = photoAspect(photo.slug)
+                return (
+                  <div
+                    key={photo.slug}
+                    className="min-w-0 basis-0 max-md:first:basis-full"
+                    style={{ flexGrow: aspect, aspectRatio: aspect }}
+                  >
+                    <RevealImage className="h-full" delay={i * 0.08} fill>
+                      <button
+                        type="button"
+                        onClick={() => setViewer(indexOf.get(photo.slug) ?? 0)}
+                        aria-label={`View ${photo.caption}, ${photo.location}`}
+                        className="photo group block h-full w-full cursor-zoom-in text-left focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-accent"
+                      >
+                        <img
+                          src={photoSrc(photo.slug)}
+                          srcSet={photoSrcSet(photo.slug)}
+                          sizes="(min-width: 768px) 40vw, 100vw"
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          className="absolute inset-0 h-full w-full object-cover"
+                        />
+                        <span className="absolute inset-0 flex items-end opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-visible:opacity-100 bg-gradient-to-t from-black/55 to-transparent">
+                          <span className="relative z-10 p-4">
+                            <span className="block font-display font-semibold text-white text-sm">{photo.caption}</span>
+                            <span className="block text-white/70 text-xs">{photo.location}</span>
+                          </span>
+                        </span>
+                      </button>
+                    </RevealImage>
                   </div>
-                </div>
-              </div>
-            </RevealImage>
+                )
+              })}
+            </div>
           ))}
         </div>
 
         <div className="mt-10">
           <a
-            href={links.instagram || '#'}
+            href={links.instagram}
             target="_blank"
             rel="noreferrer"
             className="group inline-flex items-center gap-2 font-display font-semibold text-sm uppercase tracking-wider"
@@ -67,6 +91,8 @@ export default function Photography() {
           </a>
         </div>
       </div>
+
+      <PhotoViewer photos={gallery} index={viewer} onChange={setViewer} />
     </section>
   )
 }

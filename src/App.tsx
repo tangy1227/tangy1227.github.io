@@ -15,10 +15,10 @@ const ticker = [
   'Music Technology',
   'Signal Processing',
   'Machine Learning',
+  'AI Engineering',
   'Production',
   'Photography',
   'Georgia Tech',
-  'Atlanta, GA',
 ]
 
 export default function App() {
