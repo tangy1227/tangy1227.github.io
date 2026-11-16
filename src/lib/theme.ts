@@ -43,6 +43,10 @@ function apply() {
   root.dataset.theme = theme
   root.style.colorScheme = theme
   void document.body.offsetHeight // flush styles while transitions are off
+  // Browser UI colour (mobile address bar) follows the page background.
+  document
+    .querySelector('meta[name="theme-color"]')
+    ?.setAttribute('content', getComputedStyle(root).getPropertyValue('--bg').trim())
   requestAnimationFrame(() => root.classList.remove('theme-switching'))
 }
 

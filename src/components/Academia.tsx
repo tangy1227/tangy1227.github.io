@@ -6,6 +6,7 @@ import RevealChars from './motion/RevealChars'
 import RevealImage from './motion/RevealImage'
 import RollText from './motion/RollText'
 import Button, { ArrowSwap } from './ui/Button'
+import SectionLabel from './ui/SectionLabel'
 import { links, repo } from '../data/links'
 import { EASE_OUT_EXPO } from '../lib/motion'
 
@@ -205,13 +206,13 @@ function ProjectCard({ p, flip }: { p: Project; flip: boolean }) {
   const inView = useInView(ref, { once: true, margin: '0px 0px -15% 0px' })
 
   return (
-    <article ref={ref} className="grid md:grid-cols-12 gap-6 md:gap-10 items-center">
-      <div className={`md:col-span-7 ${flip ? 'md:order-2' : ''}`}>
+    <article ref={ref} className="grid lg:grid-cols-12 gap-6 md:gap-8 lg:gap-10 items-center">
+      <div className={`lg:col-span-7 ${flip ? 'lg:order-2' : ''}`}>
         <RevealImage className="rounded-[10px] overflow-hidden">
           <ProjectMedia media={p.media} title={p.title} />
         </RevealImage>
       </div>
-      <div className={`md:col-span-5 ${flip ? 'md:order-1' : ''}`}>
+      <div className={`lg:col-span-5 max-w-2xl ${flip ? 'lg:order-1' : ''}`}>
         <motion.p
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : undefined}
@@ -286,7 +287,7 @@ function MoreProjects() {
               <p className="text-xs font-display font-semibold uppercase tracking-[0.18em] text-faint mb-1.5">{p.kicker}</p>
               <h3 className="font-display font-semibold text-lg md:text-xl">{p.title}</h3>
             </div>
-            <div className="md:col-span-6">
+            <div className={p.links.length ? 'md:col-span-6' : 'md:col-span-8'}>
               <p className="text-muted leading-relaxed">{p.blurb}</p>
               <div className="flex flex-wrap gap-2 mt-3">
                 {p.tags.map(t => (
@@ -294,11 +295,13 @@ function MoreProjects() {
                 ))}
               </div>
             </div>
-            <div className="md:col-span-2 flex md:flex-col md:items-end gap-x-6 gap-y-3 pt-1">
-              {p.links.map(l => (
-                <TextLink key={l.label} {...l} />
-              ))}
-            </div>
+            {p.links.length > 0 && (
+              <div className="md:col-span-2 flex md:flex-col md:items-end gap-x-6 gap-y-3 pt-1">
+                {p.links.map(l => (
+                  <TextLink key={l.label} {...l} />
+                ))}
+              </div>
+            )}
           </motion.li>
         ))}
       </ul>
@@ -340,15 +343,13 @@ function EntryBlock({ label, entries, className = '' }: { label: string; entries
 
 export default function Academia() {
   return (
-    <section id="academia" className="section px-6 md:px-10 py-24 md:py-32 bg-bg-alt border-t border-line">
+    <section id="academia" className="section section-alt px-6 md:px-10 py-24 md:py-32 border-t border-line">
       <div className="max-w-7xl mx-auto w-full">
-        <p className="eyebrow mb-6">
-          <RevealChars text="Academia" />
-        </p>
+        <SectionLabel n={2} text="Academia" className="mb-6" />
 
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-14">
           <RevealLines
-            className="display text-5xl md:text-7xl"
+            className="display section-title"
             lines={['Research', '& projects.']}
           />
           {links.cv && (

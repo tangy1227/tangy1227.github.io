@@ -49,6 +49,26 @@ export default function Nav() {
     return () => observer.disconnect()
   }, [])
 
+  // The menu only exists below md. Close it when the screen grows past that
+  // (tablet rotated, window resized); otherwise it stays "open" while hidden
+  // and keeps the page locked. Esc closes it too.
+  useEffect(() => {
+    if (!open) return
+    const desktop = window.matchMedia('(min-width: 768px)')
+    const close = () => {
+      if (desktop.matches) setOpen(false)
+    }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    desktop.addEventListener('change', close)
+    window.addEventListener('keydown', onKey)
+    return () => {
+      desktop.removeEventListener('change', close)
+      window.removeEventListener('keydown', onKey)
+    }
+  }, [open])
+
   // Freeze the page while the mobile menu is open. Only ever *stop* here and
   // restore on cleanup, so this never overrides the intro's own scroll lock.
   useEffect(() => {
@@ -90,7 +110,7 @@ export default function Nav() {
             <RollText text="Yilong Tang" />
           </a>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 md:gap-4">
             {/* Desktop links */}
             <div className="hidden md:flex items-center gap-5 lg:gap-8">
               {links.slice(0, -1).map(link => {
@@ -131,7 +151,7 @@ export default function Nav() {
               aria-label="Toggle menu"
               aria-expanded={open}
               onClick={() => setOpen(o => !o)}
-              className="md:hidden flex flex-col gap-1.5 p-1 text-current"
+              className="md:hidden -mr-2.5 flex size-11 flex-col items-center justify-center gap-1.5 text-current"
             >
               <span className={`ham-bar ${open ? 'translate-y-2 rotate-45' : ''}`} />
               <span className={`ham-bar ${open ? 'opacity-0' : ''}`} />
@@ -141,24 +161,27 @@ export default function Nav() {
         </div>
       </motion.nav>
 
-      {/* Mobile full-screen menu — ellipse clip reveal from the top edge. */}
+      {/* Mobile full-screen menu — ellipse clip reveal from the top edge.
+          Scrolls on its own when it doesn't fit (landscape phones); the inner
+          mt-auto keeps it bottom-aligned without cutting off the top. */}
       <AnimatePresence>
         {open && (
           <motion.div
             key="menu"
-            className="fixed inset-0 z-40 md:hidden flex flex-col justify-end bg-[#0a0a0a] text-[#fafaf8] px-6 pb-10 pt-24"
+            data-lenis-prevent
+            className="fixed inset-0 z-40 md:hidden flex flex-col overflow-y-auto overscroll-contain bg-[#0a0a0a] text-[#fafaf8] px-6 pb-10 pt-24"
             initial={{ clipPath: 'ellipse(160% 0% at 50% 0%)' }}
             animate={{ clipPath: 'ellipse(160% 130% at 50% 0%)' }}
             exit={{ clipPath: 'ellipse(160% 0% at 50% 0%)' }}
             transition={{ duration: 0.8, ease: EASE_OUT_EXPO }}
           >
-            <nav className="flex flex-col">
+            <nav className="mt-auto flex flex-col">
               {links.map((link, i) => (
                 <motion.a
                   key={link.href}
                   href={link.href}
                   onClick={e => { e.preventDefault(); goTo(link.href) }}
-                  className="group flex items-baseline gap-4 py-2 display text-[2.6rem] leading-none"
+                  className="group flex items-baseline gap-4 py-2 display text-[clamp(1.6rem,min(11vw,7.5svh),2.6rem)] leading-none"
                   initial={{ y: 48, opacity: 0 }}
                   animate={{ y: 0, opacity: 1, transition: { delay: 0.18 + i * 0.06, duration: 0.8, ease: EASE_OUT_EXPO } }}
                   exit={{ y: 24, opacity: 0, transition: { duration: 0.3 } }}

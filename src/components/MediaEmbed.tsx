@@ -15,7 +15,7 @@ export default function MediaEmbed({ type, id, title, cover }: Props) {
   const isYouTube = type === 'youtube'
   const coverSrc = cover ?? (isYouTube ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : undefined)
   const src = isYouTube
-    ? `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`
+    ? `https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1&rel=0`
     : `https://w.soundcloud.com/player/?url=${encodeURIComponent(id)}&auto_play=true&color=%23ffb800&hide_related=true`
 
   if (loaded) {
