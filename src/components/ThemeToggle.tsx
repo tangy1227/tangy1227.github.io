@@ -41,7 +41,8 @@ export default function ThemeToggle({ className = '' }: { className?: string }) 
             aria-pressed={active}
             title={label}
             onClick={choose(value)}
-            className={`relative grid size-[26px] place-items-center rounded-full transition-[color,opacity] duration-500 ease-[cubic-bezier(.19,1,.22,1)] ${
+            // Touch: a 32px button whose ::before stretches the hit area to 44px tall.
+            className={`relative grid size-[26px] pointer-coarse:size-8 place-items-center rounded-full before:absolute before:-inset-y-1.5 before:inset-x-0 before:content-[''] pointer-fine:before:hidden transition-[color,opacity] duration-500 ease-[cubic-bezier(.19,1,.22,1)] ${
               active ? 'text-on-accent' : 'opacity-60 hover:opacity-100'
             }`}
           >

@@ -1,9 +1,9 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import RevealLines from './motion/RevealLines'
-import RevealChars from './motion/RevealChars'
 import RollText from './motion/RollText'
 import Magnetic from './motion/Magnetic'
+import SectionLabel from './ui/SectionLabel'
 import { ArrowSwap } from './ui/Button'
 import { links, socials } from '../data/links'
 import { EASE_OUT_EXPO } from '../lib/motion'
@@ -17,9 +17,7 @@ export default function Contact() {
   return (
     <section id="contact" ref={ref} className="section px-6 md:px-10 pt-24 md:pt-32 pb-10 border-t border-line">
       <div className="max-w-7xl mx-auto w-full">
-        <p className="eyebrow mb-8">
-          <RevealChars text="Contact" />
-        </p>
+        <SectionLabel n={5} text="Contact" className="mb-8" />
 
         <RevealLines
           className="display text-[clamp(2.5rem,9vw,7rem)] mb-10"
@@ -34,7 +32,7 @@ export default function Contact() {
           <Magnetic strength={0.15}>
             <a
               href={`mailto:${EMAIL}`}
-              className="group inline-flex items-center gap-3 font-display font-semibold text-2xl md:text-4xl hover:text-accent transition-colors duration-500"
+              className="group inline-flex items-center gap-3 font-display font-semibold text-[min(1.5rem,5.4vw)] md:text-4xl hover:text-accent transition-colors duration-500"
             >
               <RollText text={EMAIL} />
               <ArrowSwap up size={22} />

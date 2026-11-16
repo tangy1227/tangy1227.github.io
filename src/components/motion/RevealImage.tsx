@@ -27,13 +27,13 @@ export default function RevealImage({ children, className = '', show, delay = 0,
   return (
     <div ref={ref} className={`relative ${h} ${className}`}>
       <motion.div
-        className={`relative ${h}`}
+        className={`relative overflow-hidden ${h}`}
         initial={{ clipPath: 'inset(100% 0 0 0)' }}
         animate={visible ? { clipPath: 'inset(0% 0 0 0)' } : undefined}
         transition={{ duration: 0.9, ease: EASE_OUT_EXPO, delay }}
       >
         <motion.div
-          className={`${h} will-change-transform`}
+          className={h}
           initial={{ scale: 1.18 }}
           animate={visible ? { scale: 1 } : undefined}
           transition={{ duration: 1.3, ease: EASE_OUT_EXPO, delay }}

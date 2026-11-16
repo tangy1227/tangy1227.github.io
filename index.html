@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fafaf8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    />
     <meta
       name="description"
       content="Yilong Tang — AI engineer with a music technology background: research projects, music production, and photography."
@@ -20,6 +27,9 @@
         var theme = dark ? 'dark' : 'light'
         document.documentElement.dataset.theme = theme
         document.documentElement.style.colorScheme = theme
+        // Browser UI colour (mobile address bar): matches --bg in index.css.
+        document.querySelector('meta[name="theme-color"]')
+          .setAttribute('content', dark ? '#121211' : '#fafaf8')
       })()
     </script>
   </head>

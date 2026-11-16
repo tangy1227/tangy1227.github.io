@@ -1,6 +1,7 @@
 import { useState } from 'react'
+import { FINE_POINTER, useMediaQuery } from '../lib/media'
+import SectionLabel from './ui/SectionLabel'
 import RevealLines from './motion/RevealLines'
-import RevealChars from './motion/RevealChars'
 import RevealImage from './motion/RevealImage'
 import RollText from './motion/RollText'
 import PhotoViewer from './PhotoViewer'
@@ -12,17 +13,16 @@ const indexOf = new Map(gallery.map((p, i) => [p.slug, i]))
 
 export default function Photography() {
   const [viewer, setViewer] = useState<number | null>(null)
+  const hover = useMediaQuery(FINE_POINTER)
 
   return (
-    <section id="photography" className="section px-6 md:px-10 py-24 md:py-32 bg-bg-alt border-t border-line">
+    <section id="photography" className="section section-alt px-6 md:px-10 py-24 md:py-32 border-t border-line">
       <div className="max-w-7xl mx-auto w-full">
-        <p className="eyebrow mb-6">
-          <RevealChars text="Photography — a hobby" />
-        </p>
+        <SectionLabel n={4} text="Photography — a hobby" className="mb-6" />
 
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-14">
           <RevealLines
-            className="display text-5xl md:text-7xl"
+            className="display section-title"
             lines={['Through', 'the lens.']}
           />
           <RevealLines
@@ -30,7 +30,11 @@ export default function Photography() {
             className="text-muted max-w-sm"
             delay={0.3}
             bar="var(--bg-alt)"
-            lines={['National parks out west, the Oregon coast, and home cities. Hover for color, click to view full size.']}
+            lines={[
+              `National parks out west, the Oregon coast, and home cities. ${
+                hover ? 'Hover for color, click to view full size.' : 'Tap a photo to view it full size.'
+              }`,
+            ]}
           />
         </div>
 

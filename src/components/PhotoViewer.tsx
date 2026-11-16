@@ -96,7 +96,9 @@ export default function PhotoViewer({ photos, index, onChange }: Props) {
           role="dialog"
           aria-modal="true"
           aria-label="Photo viewer"
-          className="fixed inset-0 z-[80] flex flex-col bg-[#0a0a0a]/[0.97] text-[#fafaf8] backdrop-blur-sm"
+          // --chrome: height kept free for the top bar and caption. Landscape
+          // phones get slimmer bars so the photo can use the screen.
+          className="fixed inset-0 z-[80] flex flex-col bg-[#0a0a0a]/[0.97] text-[#fafaf8] [--chrome:13rem] [@media(max-height:520px)]:[--chrome:7rem]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -106,7 +108,7 @@ export default function PhotoViewer({ photos, index, onChange }: Props) {
           }}
         >
           {/* Top bar */}
-          <div className="flex items-center justify-between px-6 md:px-10 py-5">
+          <div className="flex items-center justify-between px-6 md:px-10 py-5 [@media(max-height:520px)]:py-1.5">
             <span className="font-display text-xs font-semibold tracking-[0.2em] tabular-nums text-[#fafaf8]/70">
               {String(index! + 1).padStart(2, '0')} / {String(n).padStart(2, '0')}
             </span>
@@ -115,7 +117,7 @@ export default function PhotoViewer({ photos, index, onChange }: Props) {
               type="button"
               aria-label="Close viewer"
               onClick={() => onChange(null)}
-              className="grid size-10 place-items-center rounded-full border border-white/20 transition-colors duration-500 hover:border-accent hover:bg-accent hover:text-on-accent"
+              className="grid size-11 place-items-center rounded-full border border-white/20 transition-colors duration-500 hover:border-accent hover:bg-accent hover:text-on-accent"
             >
               <X size={18} strokeWidth={2.25} />
             </button>
@@ -133,7 +135,7 @@ export default function PhotoViewer({ photos, index, onChange }: Props) {
                 key={photo.slug}
                 custom={dir}
                 className="relative cursor-grab touch-pan-y active:cursor-grabbing"
-                style={{ aspectRatio: aspect, width: `min(100%, calc((100svh - 13rem) * ${aspect}))` }}
+                style={{ aspectRatio: aspect, width: `min(100%, calc((100svh - var(--chrome)) * ${aspect}))` }}
                 variants={{
                   enter: (d: number) => ({ opacity: 0, x: d * slide }),
                   center: { opacity: 1, x: 0 },
@@ -168,9 +170,9 @@ export default function PhotoViewer({ photos, index, onChange }: Props) {
           </div>
 
           {/* Caption + controls */}
-          <div className="flex items-end justify-between gap-6 px-6 md:px-10 pt-4 pb-6 md:pb-8">
+          <div className="flex items-end justify-between gap-6 px-6 md:px-10 pt-4 pb-6 md:pb-8 [@media(max-height:520px)]:pt-1.5 [@media(max-height:520px)]:pb-2.5">
             <div className="min-w-0" aria-live="polite">
-              <p className="font-display font-semibold text-base md:text-lg line-clamp-2">{photo.caption}</p>
+              <p className="font-display font-semibold text-base md:text-lg line-clamp-2 [@media(max-height:520px)]:line-clamp-1">{photo.caption}</p>
               <p className="text-sm text-[#fafaf8]/60 truncate">{photo.location}</p>
             </div>
             <div className="flex shrink-0 gap-2">

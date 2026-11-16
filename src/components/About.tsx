@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import RevealLines from './motion/RevealLines'
 import RevealChars from './motion/RevealChars'
+import SectionLabel from './ui/SectionLabel'
 import RevealImage from './motion/RevealImage'
 import ScrollWords, { type Token } from './motion/ScrollWords'
 import { EASE_OUT_EXPO } from '../lib/motion'
@@ -31,11 +32,11 @@ export default function About() {
 
   return (
     <section id="about" className="section px-6 md:px-10 py-24 md:py-32">
-      <div className="max-w-7xl mx-auto grid md:grid-cols-12 gap-10 md:gap-16">
-        <div className="md:col-span-4">
-          <p className="eyebrow mb-6">
-            <RevealChars text="About" />
-          </p>
+      {/* Tablet: heading + portrait | intro, skills full width below.
+          lg: the left column spans both rows, skills sit under the intro. */}
+      <div className="max-w-7xl mx-auto grid md:grid-cols-12 lg:grid-rows-[auto_1fr] gap-10 md:gap-x-12 md:gap-y-14 lg:gap-x-16 lg:gap-y-12">
+        <div className="md:col-span-5 lg:col-span-4 lg:row-span-2">
+          <SectionLabel n={1} text="About" className="mb-6" />
           <RevealLines
             className="display text-4xl md:text-5xl"
             lines={['A little', 'about me.']}
@@ -44,7 +45,7 @@ export default function About() {
             <img
               src={photoSrc(portrait.slug, 2048)}
               srcSet={photoSrcSet(portrait.slug)}
-              sizes="(min-width: 768px) 30vw, 340px"
+              sizes="(min-width: 768px) 40vw, 340px"
               alt={portrait.alt}
               loading="lazy"
               decoding="async"
@@ -53,14 +54,16 @@ export default function About() {
           </RevealImage>
         </div>
 
-        <div className="md:col-span-8">
+        <div className="md:col-span-7 lg:col-span-8">
           <ScrollWords
             tokens={intro}
             className="text-xl md:text-2xl leading-snug text-ink-soft max-w-2xl"
             strongClassName="text-ink font-medium"
           />
+        </div>
 
-          <div ref={skillsRef} className="mt-12 space-y-6">
+        <div className="md:col-span-12 lg:col-span-8 lg:col-start-5">
+          <div ref={skillsRef} className="space-y-6">
             {skillGroups.map((group, g) => (
               <div key={group.label} className="grid md:grid-cols-12 gap-3 items-start">
                 <p className="md:col-span-3 eyebrow pt-1">
